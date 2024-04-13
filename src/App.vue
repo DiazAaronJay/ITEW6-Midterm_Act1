@@ -68,7 +68,7 @@ nav a:hover {
   background-color: #7b5d4d;
   color: #f8f1e5;
   padding: 8px 16px;
-  border: none;
+  border: 1px solid #7b5d4d;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -76,5 +76,6 @@ nav a:hover {
 
 .logout-button:hover {
   background-color: #56433d;
+  border: 1px solid #7b5d4d;
 }
 </style>
