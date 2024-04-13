@@ -1,6 +1,5 @@
 <template>
   <div class="shopping-cart">
-    <button class="logout-button" @click="logout">Logout</button>
     <h2>Shopping Cart</h2>
     <p class="total-price">Total Price: ${{ totalPrice }}</p>
 
@@ -8,15 +7,12 @@
       Your cart is empty.
     </div>
 
-    <!-- Display cart items -->
-    <ul v-if="filteredCart.length > 0">
-      <li v-for="(item, index) in filteredCart" :key="item.id" class="cart-item">
-        <!-- Cart item details -->
+    <ul v-if="cart.length > 0">
+      <li v-for="(item, index) in cart" :key="item.id" class="cart-item">
         <div class="cart-item-details">
           <img :src="item.image" alt="Book Cover" class="cart-item-image">
           <div class="cart-item-info">
             <p class="cart-item-title">{{ item.title }}</p>
-            <p class="cart-item-author">{{ item.author }}</p>
             <p class="cart-item-price">$ {{ item.price }}</p>
             <div class="quantity-controls">
               <button @click="decrementQuantity(index)" class="quantity-button">-</button>
@@ -25,7 +21,6 @@
             </div>
           </div>
         </div>
-        <!-- Remove button -->
         <button @click="removeFromCart(item.id)" class="button">Remove</button>
       </li>
     </ul>
@@ -33,35 +28,28 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
-
 export default {
   computed: {
-    ...mapState('cart', ['cart']),
-    ...mapGetters('cart', ['totalPrice']),
-    filteredCart() {
-      const query = this.searchQuery.toLowerCase().trim();
-      if (!query) {
-        return this.cart;
-      }
-      return this.cart.filter(item =>
-        item.title.toLowerCase().includes(query) || item.author.toLowerCase().includes(query)
-      );
+    cart() {
+      return this.$store.getters.cartItems;
     },
-  },
-  data() {
-    return {
-      searchQuery: '',
-    };
+    totalPrice() {
+      return this.$store.getters.cartTotalPrice;
+    },
   },
   methods: {
-    ...mapActions('cart', ['removeFromCart', 'incrementQuantity', 'decrementQuantity']),
-    handleSearch() {
-      this.$store.commit('cart/setSearchQuery', this.searchQuery);
+    removeFromCart(bookId) {
+      this.$store.commit('REMOVE_FROM_CART', bookId);
+    },
+    incrementQuantity(index) {
+      this.$store.commit('INCREMENT_QUANTITY', index);
+    },
+    decrementQuantity(index) {
+      this.$store.commit('DECREMENT_QUANTITY', index);
     },
     logout() {
-      localStorage.removeItem('isAuthenticated');
-      this.$router.push('/login');
+      localStorage.removeItem('isAuthenticated'); 
+      this.$router.push('/login'); 
     },
   },
 };
@@ -70,20 +58,24 @@ export default {
 <style scoped>
 .shopping-cart {
   padding: 20px;
-  position: relative;
+  position: relative; 
 }
 
 .logout-button {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 20px; 
+  right: 20px; 
   padding: 8px 16px;
-  background-color: #7b5d4d;
-  color: #f8f1e5;
+  background-color: #7b5d4d; 
+  color: #f8f1e5; 
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #56433d; 
 }
 
 .total-price {
@@ -101,7 +93,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f5e1da;
+  background-color: #f5e1da; 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
@@ -133,7 +125,7 @@ export default {
 
 .cart-item-price {
   font-weight: bold;
-  color: #7b5d4d;
+  color: #7b5d4d; 
 }
 
 .quantity-controls {
@@ -143,7 +135,7 @@ export default {
 
 .quantity-button {
   padding: 6px;
-  background-color: #7b5d4d;
+  background-color: #7b5d4d; 
   color: #f8f1e5;
   border: none;
   border-radius: 4px;
@@ -157,8 +149,8 @@ export default {
 
 .button {
   padding: 8px 16px;
-  background-color: #7b5d4d;
-  color: #f8f1e5;
+  background-color: #7b5d4d; 
+  color: #f8f1e5; 
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -166,8 +158,6 @@ export default {
 }
 
 .button:hover {
-  background-color: #56433d;
-  border: 1px solid #7b5d4d;
+  background-color: #56433d; 
 }
-
 </style>
