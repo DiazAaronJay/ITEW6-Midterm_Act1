@@ -1,24 +1,17 @@
 <template>
   <div class="shopping-cart">
+    <button class="logout-button" @click="logout">Logout</button>
     <h2>Shopping Cart</h2>
     <p class="total-price">Total Price: ${{ totalPrice }}</p>
-
-    <div class="search-container">
-      <input
-        type="text"
-        placeholder="Search by title or author"
-        v-model="searchQuery"
-        @input="handleSearch"
-        class="search-input"
-      />
-    </div>
 
     <div v-if="cart.length === 0" class="empty-cart-message">
       Your cart is empty.
     </div>
 
+    <!-- Display cart items -->
     <ul v-if="filteredCart.length > 0">
       <li v-for="(item, index) in filteredCart" :key="item.id" class="cart-item">
+        <!-- Cart item details -->
         <div class="cart-item-details">
           <img :src="item.image" alt="Book Cover" class="cart-item-image">
           <div class="cart-item-info">
@@ -32,6 +25,7 @@
             </div>
           </div>
         </div>
+        <!-- Remove button -->
         <button @click="removeFromCart(item.id)" class="button">Remove</button>
       </li>
     </ul>
@@ -63,7 +57,7 @@ export default {
   methods: {
     ...mapActions('cart', ['removeFromCart', 'incrementQuantity', 'decrementQuantity']),
     handleSearch() {
-      
+      this.$store.commit('cart/setSearchQuery', this.searchQuery);
     },
     logout() {
       localStorage.removeItem('isAuthenticated');
@@ -76,24 +70,20 @@ export default {
 <style scoped>
 .shopping-cart {
   padding: 20px;
-  position: relative; 
+  position: relative;
 }
 
 .logout-button {
   position: absolute;
-  top: 20px; 
-  right: 20px; 
+  top: 20px;
+  right: 20px;
   padding: 8px 16px;
-  background-color: #7b5d4d; 
-  color: #f8f1e5; 
+  background-color: #7b5d4d;
+  color: #f8f1e5;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #56433d; 
 }
 
 .total-price {
@@ -111,7 +101,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f5e1da; 
+  background-color: #f5e1da;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
@@ -143,7 +133,7 @@ export default {
 
 .cart-item-price {
   font-weight: bold;
-  color: #7b5d4d; 
+  color: #7b5d4d;
 }
 
 .quantity-controls {
@@ -153,7 +143,7 @@ export default {
 
 .quantity-button {
   padding: 6px;
-  background-color: #7b5d4d; 
+  background-color: #7b5d4d;
   color: #f8f1e5;
   border: none;
   border-radius: 4px;
@@ -167,8 +157,8 @@ export default {
 
 .button {
   padding: 8px 16px;
-  background-color: #7b5d4d; 
-  color: #f8f1e5; 
+  background-color: #7b5d4d;
+  color: #f8f1e5;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -176,18 +166,8 @@ export default {
 }
 
 .button:hover {
-  background-color: #56433d; 
+  background-color: #56433d;
+  border: 1px solid #7b5d4d;
 }
 
-.search-container {
-  margin-bottom: 20px;
-}
-
-.search-input {
-  padding: 8px;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
 </style>
