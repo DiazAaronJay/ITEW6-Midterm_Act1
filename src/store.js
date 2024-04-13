@@ -15,7 +15,7 @@ const store = createStore({
         { id: 10, title: 'Jujutsu Kaisen', author: 'Author J', price: 17, image: 'image/img2.jpg'  },
     ],
     cart: [], 
-    isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+    isAuthenticated: localStorage.getItem('isAuthenticated') === 'false',
   },
   mutations: {
     ADD_TO_CART(state, { book, quantity }) {
